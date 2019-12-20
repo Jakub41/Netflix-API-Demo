@@ -4,6 +4,7 @@ module.exports = {
     // Server
     port: process.env.PORT,
     movies: process.env.MOVIES,
+    reviews: process.env.REVIEWS,
     // Directories
     db: process.env.JSON,
     reviewsDB: process.env.REVIEWS_DB,
