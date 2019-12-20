@@ -4,8 +4,18 @@ const {
     updateMovieValidation
 } = require("./movie");
 
+const {
+    createReviewValidation,
+    updateReviewValidation
+} = require("./reviews");
+
+const { upload } = require('./fileupload');
+
 module.exports = {
     rules: validateRules,
     createMovie: createMovieValidation,
-    updateMovie: updateMovieValidation
+    updateMovie: updateMovieValidation,
+    createReview: createReviewValidation,
+    updateReview: updateReviewValidation,
+    upload
 };

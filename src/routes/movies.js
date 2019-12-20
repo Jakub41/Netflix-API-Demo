@@ -68,19 +68,7 @@ router.post("/", check.createMovie(), check.rules, async (req, res) => {
 
 // POST email send
 router.post("/sendEmail", async (req, res) => {
-    await res.emailSender()
-        .then(email =>
-            res.json({
-                message: `The email was sent OK`,
-                content: email
-            })
-        )
-        .catch(err => {
-            if (err.status) {
-                res.status(err.status).json({ message: err.message });
-            }
-            res.status(500).json({ message: err.message });
-        });
+    await emailSender();
 });
 
 // PUT Update a movie
@@ -127,6 +115,53 @@ router.delete("/:imdbid", check.rules, async (req, res) => {
             }
             res.status(500).json({ message: err.message });
         });
+});
+
+router.get("/:imdbid/reviews", check.rules, async (req, res) => {
+    const imdbid = req.params.imdbid;
+    // Await server
+    await review
+        .getReviewsOfAmovie(imdbid)
+        .then(review => res.json(review))
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            } else {
+                res.status(500).json({ message: err.message });
+            }
+        });
+});
+
+router.post("/:imdbid/upload", (req, res) => {
+    check.upload.single("poster")(req, res, async function(err) {
+        if (err) {
+            res.status(err.status || 500).json({ message: err });
+            return;
+        }
+
+        const imdbid = req.params.imdbid;
+        const file = req.file;
+        const url = `/poster/${file.filename}`;
+
+        // Await the movie
+        await movie
+            // Call model to update the product
+            .updateMovie(imdbid, { Poster: url })
+            // Response a message
+            .then(movie =>
+                res.json({
+                    message: `The Movie #${imdbid} has been updated`,
+                    content: movie
+                })
+            )
+            // Errors if any
+            .catch(err => {
+                if (err.status) {
+                    res.status(err.status).json({ message: err.message });
+                }
+                res.status(500).json({ message: err.message });
+            });
+    });
 });
 
 // Routes
