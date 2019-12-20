@@ -90,7 +90,7 @@ router.put("/:imdbid", check.updateMovie(), check.rules, async (req, res) => {
 
 // DELeTE a movie
 router.delete("/:imdbid", check.rules, async (req, res) => {
-    const asin = req.params.asin;
+    const imdbid = req.params.imdbid;
     // Await server
     await movie
         // Model delete product
