@@ -52,8 +52,47 @@ const createMovie = newMovie => {
     });
 };
 
+// PUT Update movie
+const updateMovie = (imdbid, newMovie) => {
+    return new Promise((resolve, reject) => {
+        h.inArray(movies, imdbid)
+            .then(movie => {
+                const index = movies.findIndex(b => b.imdbid === imdbid);
+                let updateId = { imdbid: movie.imdbid };
+                const date = {
+                    created_at: movie.created_at,
+                    // Update only the updated at date time
+                    updated_at: h.dateTime()
+                };
+                // Merging new data with old data
+                let updatedMovie = { ...movies[index], ...newMovie };
+                movies[index] = { ...updateId, ...updatedMovie, ...date };
+                h.writeJson(filePath, movies);
+                resolve(movies[index]);
+            })
+            .catch(err => reject(err));
+    });
+};
+
+// DELETE a Movie
+const deleteMovie = imdbid => {
+    return new Promise((resolve, reject) => {
+        // Check if it is part of an array
+        h.inArray(movies, imdbid)
+            // Filter the movie id to delete and write
+            .then(() => {
+                movies = movies.filter(m => m.imdbid !== imdbid);
+                h.writeJson(filePath, movies);
+                resolve();
+            })
+            .catch(err => reject(err));
+    });
+};
+
 module.exports = {
     getMovies,
     getMovie,
-    createMovie
+    createMovie,
+    updateMovie,
+    deleteMovie
 };

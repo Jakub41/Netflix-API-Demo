@@ -64,5 +64,52 @@ router.post("/", check.createMovie(), check.rules, async (req, res) => {
         .catch(err => res.status(500).json({ message: err.message }));
 });
 
+// PUT Update a movie
+router.put("/:imdbid", check.updateMovie(), check.rules, async (req, res) => {
+    // Request ID
+    const imdbid = req.params.imdbid;
+    // Await the movie
+    await movie
+        // Call model to update the product
+        .updateMovie(imdbid, req.body)
+        // Response a message
+        .then(movie =>
+            res.json({
+                message: `The Movie #${imdbid} has been updated`,
+                content: movie
+            })
+        )
+        // Errors if any
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            }
+            res.status(500).json({ message: err.message });
+        });
+});
+
+// DELeTE a movie
+router.delete("/:imdbid", check.rules, async (req, res) => {
+    const asin = req.params.asin;
+    // Await server
+    await movie
+        // Model delete product
+        .deleteMovie(imdbid)
+        .then(movie =>
+            // Response
+            res.json({
+                message: `The Movie #${imdbid} has been deleted`
+            })
+        )
+        // Any error
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            }
+            res.status(500).json({ message: err.message });
+        });
+});
+
+
 // Routes
 module.exports = router;
