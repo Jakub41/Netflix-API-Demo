@@ -3,7 +3,7 @@ require("dotenv").config();
 module.exports = {
     // Server
     port: process.env.PORT,
-    products: process.env.MOVIES,
+    movies: process.env.MOVIES,
     // Directories
     db: process.env.JSON,
     uploads: process.env.UPLOADS,
