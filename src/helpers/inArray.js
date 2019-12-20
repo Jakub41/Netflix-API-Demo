@@ -11,7 +11,7 @@ const inArray = (array, imdbid, keyName) => {
         if (!row) {
             // If not row then we reject and show an message and status 404
             reject({
-                message: "ID is not found",
+                message: "Not found",
                 status: "404"
             });
         }

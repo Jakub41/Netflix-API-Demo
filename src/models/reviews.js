@@ -10,6 +10,7 @@ let reviews = require(filePath);
 
 const h = require("../helpers/index.helper");
 
+// GET all reviews
 const getReviews = () => {
     return new Promise((resolve, reject) => {
         if (reviews.length === 0) {
@@ -22,6 +23,7 @@ const getReviews = () => {
     });
 };
 
+// GET one review
 const getReview = _id => {
     return new Promise((resolve, reject) => {
         // We use the helper to check the data is present in the array
@@ -31,6 +33,7 @@ const getReview = _id => {
     });
 };
 
+// GET Reviews of on movie
 const getReviewsOfAmovie = imdbid => {
     return new Promise((resolve, reject) => {
         // Check if it is part of an array
@@ -43,6 +46,7 @@ const getReviewsOfAmovie = imdbid => {
     });
 };
 
+// POST new a review
 const createReview = newReview => {
     return new Promise((resolve, reject) => {
         const date = {
@@ -60,6 +64,7 @@ const createReview = newReview => {
     });
 };
 
+// PUT update review
 const updateReview = (_id, newReview) => {
     return new Promise((resolve, reject) => {
         h.inArray(reviews, _id, "_id")
@@ -81,6 +86,7 @@ const updateReview = (_id, newReview) => {
     });
 };
 
+// Delete review
 const deleteReview = _id => {
     return new Promise((resolve, reject) => {
         // Check if it is part of an array

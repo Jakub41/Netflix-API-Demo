@@ -4,8 +4,8 @@ const express = require("express");
 const router = express.Router();
 //  Email sender
 const { emailSender } = require("../utilities/email");
-// Movie model
-const movie = require("../models/movie");
+// Models
+const { movie, review } = require("../models/index.models");
 // Validations middleware
 const check = require("../middleware/index.middleware");
 
@@ -145,7 +145,7 @@ router.post("/:imdbid/upload", (req, res) => {
 
         // Await the movie
         await movie
-            // Call model to update the product
+            // Call model to update the movie poster
             .updateMovie(imdbid, { Poster: url })
             // Response a message
             .then(movie =>

@@ -1,7 +1,7 @@
 // Adding body module of express validator
 const { check, sanitizeBody } = require("express-validator");
 
-// Create new movie validation
+// Create new review validation
 const createReviewValidation = () => {
     return [
         check("rate")
@@ -16,7 +16,7 @@ const createReviewValidation = () => {
     ];
 };
 
-// Update movie validation
+// Update review validation
 const updateReviewValidation = () => {
     return [
         check("rate")

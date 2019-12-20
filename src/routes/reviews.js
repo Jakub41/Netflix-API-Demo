@@ -75,7 +75,7 @@ router.put("/:id", check.updateReview(), check.rules, async (req, res) => {
         });
 });
 
-// DELeTE a Review
+// DELETE a Review
 router.delete("/:id", check.rules, async (req, res) => {
     const id = req.params.id;
     // Await server

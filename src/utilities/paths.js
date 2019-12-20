@@ -1,11 +1,9 @@
 const config = require("../config/config");
 
 // Movies file JSON
-const movieJSON = config.db;
+const movieJSON = config.moviesDB;
+// Reviews file JSON
 const reviewJSON = config.reviewsDB;
-
-console.log(movieJSON)
-console.log(reviewJSON)
 
 module.exports = {
     movieJSON,

@@ -6,7 +6,7 @@ module.exports = {
     movies: process.env.MOVIES,
     reviews: process.env.REVIEWS,
     // Directories
-    db: process.env.JSON,
+    moviesDB: process.env.MOVIES_DB,
     reviewsDB: process.env.REVIEWS_DB,
     uploads: process.env.UPLOADS,
     pdfDir: process.env.PDF,
