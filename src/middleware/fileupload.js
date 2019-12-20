@@ -1,15 +1,15 @@
 const path = require("path");
 const multer = require("multer");
 
-const { uploads } = require("../config/config");
+const { uploads, POSTERS } = require("../config/config");
 
 // setting up storage engine for file upload
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, path.join(__dirname, uploads));
+        cb(null, path.join(__dirname, uploads+"/"+POSTERS));
     },
     filename: function(req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now());
+        cb(null, file.fieldname + "-" + Date.now() + ".png");
     }
 });
 
