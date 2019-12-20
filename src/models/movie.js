@@ -57,8 +57,10 @@ const updateMovie = (imdbid, newMovie) => {
     return new Promise((resolve, reject) => {
         h.inArray(movies, imdbid)
             .then(movie => {
-                const index = movies.findIndex(b => b.imdbid === imdbid);
-                let updateId = { imdbid: movie.imdbid };
+                const index = movies.findIndex(b => b.imdbID === imdbid);
+                console.log("INDEX ", index)
+                let updateId = { imdbid: movie.imdbID };
+                console.log("updateID ", updateId)
                 const date = {
                     created_at: movie.created_at,
                     // Update only the updated at date time
@@ -81,7 +83,7 @@ const deleteMovie = imdbid => {
         h.inArray(movies, imdbid)
             // Filter the movie id to delete and write
             .then(() => {
-                movies = movies.filter(m => m.imdbid !== imdbid);
+                movies = movies.filter(m => m.imdbID !== imdbid);
                 h.writeJson(filePath, movies);
                 resolve();
             })
