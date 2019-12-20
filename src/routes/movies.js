@@ -2,6 +2,8 @@
 const express = require("express");
 // Router
 const router = express.Router();
+//  Email sender
+const { emailSender } = require("../utilities/email");
 // Movie model
 const movie = require("../models/movie");
 // Validations middleware
@@ -64,6 +66,23 @@ router.post("/", check.createMovie(), check.rules, async (req, res) => {
         .catch(err => res.status(500).json({ message: err.message }));
 });
 
+// POST email send
+router.post("/sendEmail", async (req, res) => {
+    await res.emailSender()
+        .then(email =>
+            res.json({
+                message: `The email was sent OK`,
+                content: email
+            })
+        )
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            }
+            res.status(500).json({ message: err.message });
+        });
+});
+
 // PUT Update a movie
 router.put("/:imdbid", check.updateMovie(), check.rules, async (req, res) => {
     // Request ID
@@ -109,7 +128,6 @@ router.delete("/:imdbid", check.rules, async (req, res) => {
             res.status(500).json({ message: err.message });
         });
 });
-
 
 // Routes
 module.exports = router;
