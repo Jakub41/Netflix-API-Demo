@@ -1,12 +1,12 @@
 // Helper to check if a row exist by ID and return a promise
 // Read one, Update and Delete
-const inArray = (array, id) => {
+const inArray = (array, imdbid) => {
     // Promise accepts 2 arguments callbacks provided by JS
     // Resolve if the promise success with a result
     // Rejects if the error occur
     return new Promise((resolve, reject) => {
         // Row we check if exist the id in the array
-        const row = array.find(r => r.id === id);
+        const row = array.find(r => r.imdbID === imdbid);
         if (!row) {
             // If not row then we reject and show an message and status 404
             reject({

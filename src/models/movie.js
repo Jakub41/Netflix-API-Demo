@@ -24,6 +24,17 @@ const getMovies = () => {
     });
 };
 
+// GET one movie
+const getMovie = imdbid => {
+    return new Promise((resolve, reject) => {
+        // We use the helper to check the data is present in the array
+        h.inArray(movies, imdbid)
+            .then(movie => resolve(movie))
+            .catch(err => reject(err));
+    });
+};
+
 module.exports = {
     getMovies,
+    getMovie,
 };
