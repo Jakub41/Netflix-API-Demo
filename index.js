@@ -56,6 +56,11 @@ server.use(require("./src/routes/index.routes"));
 // Endpoints list
 console.log(listEndpoints(server));
 
+// Missing routes check
+server.use((req, res) => {
+    res.send('route not found 404');
+});
+
 // Starting the server on env port
 server.listen(`${port}` || "3000", () => {
     // Showing a message to the console informing on which port is running

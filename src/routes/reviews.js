@@ -38,6 +38,12 @@ router.get("/:id", check.rules, async (req, res) => {
 });
 
 router.post("/", check.createReview(), check.rules, async (req, res) => {
+    let rate = req.body.rate;
+    rate = +rate;
+    if (rate < 1 || rate > 5) {
+        res.status(500).json({ message: "rating must be between 1 and 5" });
+        return;
+    }
     review
         .createReview(req.body)
         .then(data =>
@@ -55,6 +61,14 @@ router.post("/", check.createReview(), check.rules, async (req, res) => {
 router.put("/:id", check.updateReview(), check.rules, async (req, res) => {
     // Request ID
     const id = req.params.id;
+
+    let rate = req.body.rate;
+    rate = +rate;
+    if (rate < 1 || rate > 5) {
+        res.status(500).json({ message: "rating must be between 1 and 5" });
+        return;
+    }
+
     // Await the Review
     await review
         // Call model to update the product
@@ -70,8 +84,9 @@ router.put("/:id", check.updateReview(), check.rules, async (req, res) => {
         .catch(err => {
             if (err.status) {
                 res.status(err.status).json({ message: err.message });
+            } else {
+                res.status(500).json({ message: err.message });
             }
-            res.status(500).json({ message: err.message });
         });
 });
 
