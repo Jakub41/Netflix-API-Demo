@@ -23,3 +23,6 @@ router.get("/", check.rules, async (req, res) => {
             }
         });
 });
+
+// Routes
+module.exports = router;

@@ -20,7 +20,7 @@ const getMovies = () => {
                 status: 202
             });
         }
-        resolve(books).catch(err => reject(err));
+        resolve(movies).catch(err => reject(err));
     });
 };
 

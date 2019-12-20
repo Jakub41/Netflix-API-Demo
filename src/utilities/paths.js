@@ -1,6 +1,6 @@
 const config = require("../config/config");
 
-// Books file JSON
+// Movies file JSON
 const movieJSON = config.db;
 
 module.exports = {
