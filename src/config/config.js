@@ -5,6 +5,7 @@ module.exports = {
     port: process.env.PORT,
     movies: process.env.MOVIES,
     reviews: process.env.REVIEWS,
+    catalogue: process.env.CATALOGUE,
     // Directories
     moviesDB: process.env.MOVIES_DB,
     reviewsDB: process.env.REVIEWS_DB,
@@ -15,5 +16,7 @@ module.exports = {
     email_port: process.env.EMAIL_PORT,
     email_host: process.env.EMAIL_HOST,
     email_user: process.env.EMAIL_USER,
-    email_pass: process.env.EMAIL_PASS
+    email_pass: process.env.EMAIL_PASS,
+    // SG Email
+    sg_token: process.env.SG_TOKEN
 };

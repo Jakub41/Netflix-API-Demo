@@ -2,8 +2,6 @@
 const express = require("express");
 // Router
 const router = express.Router();
-//  Email sender
-const { emailSender } = require("../utilities/email");
 // Models
 const { movie, review } = require("../models/index.models");
 // Validations middleware
@@ -64,11 +62,6 @@ router.post("/", check.createMovie(), check.rules, async (req, res) => {
         )
         // Error Movie not created
         .catch(err => res.status(500).json({ message: err.message }));
-});
-
-// POST email send
-router.post("/sendEmail", async (req, res) => {
-    await emailSender();
 });
 
 // PUT Update a movie
