@@ -9,6 +9,7 @@ const router = express.Router();
 router.use(url.movies, require("./movies"));
 router.use(url.reviews, require("./reviews"));
 router.use(url.catalogue, require("./catalogue"));
+router.use(url.omdb, require("./omdbApi"));
 
 // Exporting the Index Router
 module.exports = router;
