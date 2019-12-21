@@ -17,4 +17,18 @@ const searchMovieOmdb = async s => {
     });
 };
 
-module.exports = { searchMovieOmdb };
+const getMovieOmdb = async id => {
+    return new Promise((resolve, reject) => {
+        fetch(url + "&i=" + id)
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+                resolve(json);
+            })
+            .catch(err => reject(err));
+    });
+};
+
+module.exports = { searchMovieOmdb, getMovieOmdb };
