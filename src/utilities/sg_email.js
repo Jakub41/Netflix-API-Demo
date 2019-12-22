@@ -12,9 +12,10 @@ const mailGenerator = new MailGen({
 
 const email = {
     body: {
-        name: "Jake",
-        intro: ["Welcome to the movie platform",
-                "Discover today the best movies you can watch"],
+        intro: [
+            "Welcome to the movie platform",
+            "Discover today the best movies you can watch"
+        ],
         action: {
             instructions:
                 "Please click the button below to checkout new movies",
@@ -31,16 +32,15 @@ const emailTemplate = mailGenerator.generate(email);
 require("fs").writeFileSync("preview.html", emailTemplate, "utf8");
 
 const msg = {
-    to: "kubus41@gmail.com",
     from: "jake@email.io",
     subject: "Testing email from NodeJS",
     html: emailTemplate
 };
 
-const sendEmail = async () => {
+const sendEmail = receiver => {
     try {
         sgMail.setApiKey(sg_token);
-        return sgMail.send(msg);
+        return sgMail.send({ ...msg, to: receiver, ...email, body: { name: receiver }});
     } catch (error) {
         throw new Error(error.message);
     }
