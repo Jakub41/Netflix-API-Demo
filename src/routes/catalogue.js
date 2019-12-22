@@ -21,7 +21,7 @@ router.post("/email/:receiver", async (req, res) => {
     try {
         const sent = await sendEmail(receiver);
         if (sent) {
-            res.send({ message: "email sent successfully", status: 200 });
+            res.send({ message: `Email sent to ${receiver} successfully`, status: 200 });
             console.log("Email sent");
         }
     } catch (error) {

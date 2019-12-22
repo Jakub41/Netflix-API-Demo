@@ -10,37 +10,43 @@ const mailGenerator = new MailGen({
     }
 });
 
-const email = {
-    body: {
-        intro: [
-            "Welcome to the movie platform",
-            "Discover today the best movies you can watch"
-        ],
-        action: {
-            instructions:
-                "Please click the button below to checkout new movies",
-            button: {
-                color: "#33b5e5",
-                text: "New Movies Waiting For you",
-                link: "http://example.com/"
+const sendEmail = async receiver => {
+    const email = {
+        body: {
+            name: receiver.split("@")[0], // will take the part before the @ symbol
+            intro: [
+                "Welcome to the movie platform",
+                "Discover today the best movies you can watch"
+            ],
+            action: {
+                instructions:
+                    "Please click the button below to checkout new movies",
+                button: {
+                    color: "#33b5e5",
+                    text: "New Movies Waiting For you",
+                    link: "http://example.com/"
+                }
             }
         }
-    }
-};
+    };
 
-const emailTemplate = mailGenerator.generate(email);
-require("fs").writeFileSync("preview.html", emailTemplate, "utf8");
+    const emailTemplate = mailGenerator.generate(email);
+    require("fs").writeFileSync("preview.html", emailTemplate, "utf8");
 
-const msg = {
-    from: "jake@email.io",
-    subject: "Testing email from NodeJS",
-    html: emailTemplate
-};
+    const msg = {
+        from: "jake@email.io",
+        subject: "Testing email from NodeJS",
+        html: emailTemplate
+    };
 
-const sendEmail = receiver => {
     try {
         sgMail.setApiKey(sg_token);
-        return sgMail.send({ ...msg, to: receiver, ...email, body: { name: receiver }});
+        return sgMail.send({
+            ...msg,
+            to: receiver,
+            ...email,
+            body: { name: receiver }
+        });
     } catch (error) {
         throw new Error(error.message);
     }
