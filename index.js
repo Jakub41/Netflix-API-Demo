@@ -35,7 +35,7 @@ server.use(bodyParser.json());
 // Query middleware
 server.use((req, res, next) => {
     for (let key in req.query) {
-        req.query[key.toLowerCase()] = req.query[key];
+        req.query[key] = req.query[key];
     }
     next();
 });

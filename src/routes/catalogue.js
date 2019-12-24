@@ -38,13 +38,13 @@ router.get("/search", async (req, res) => {
 
     const queryParam = [];
     if (type !== undefined) {
-        queryParam.push({ Type: type.toLowerCase() });
+        queryParam.push({ Type: type });
     }
     if (title !== undefined) {
-        queryParam.push({ Title: title.toLowerCase() });
+        queryParam.push({ Title: title });
     }
     if (year !== undefined) {
-        queryParam.push({ Year: year.toLowerCase() });
+        queryParam.push({ Year: year });
     }
 
     await movie
