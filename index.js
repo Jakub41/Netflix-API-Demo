@@ -32,6 +32,14 @@ server.use(morgan("dev"));
 // Returns middleware that only parses json
 server.use(bodyParser.json());
 
+// Query middleware
+server.use((req, res, next) => {
+    for (let key in req.query) {
+        req.query[key.toLowerCase()] = req.query[key];
+    }
+    next();
+});
+
 // Express urlencoded
 // Returns middleware that only parses urlencoded with the QueryString module
 /**
@@ -58,7 +66,7 @@ console.log(listEndpoints(server));
 
 // Missing routes check
 server.use((req, res) => {
-    res.send('route not found 404');
+    res.send("route not found 404");
 });
 
 // Starting the server on env port

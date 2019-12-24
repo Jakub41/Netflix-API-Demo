@@ -10,19 +10,20 @@ const { catalogue, movie } = require("../models/index.models");
 const { isValidEmail } = require("../middleware/index.middleware");
 // PDF Generator
 const generatePdf = require("../utilities/pdfMake");
+// Search movie
+const searchMovie = require("../utilities/searchMovie");
 
 router.get("/pdf/all", async (req, res) => {
     const movies = await movie.getMovies();
     try {
         const pdf = await generatePdf(movies, "all");
-        if(pdf) {
+        if (pdf) {
             res.send({
                 message: "PDF created",
                 status: 200
             });
             console.log("PDF generated");
         }
-
     } catch (err) {
         // Errors
         res.status(err.status).json({ message: err.message });
@@ -30,13 +31,34 @@ router.get("/pdf/all", async (req, res) => {
     }
 });
 
-// GET Search catalogue of movies
-// router.post("/search", async (req, res) => {
-//     const t = req.params.t;
-//     await catalogue
-//         .searchInCatalogue()
-//         .
-// });
+router.get("/search", async (req, res) => {
+    let title = req.query.title;
+    let year = req.query.year;
+    let type = req.query.type;
+
+    const queryParam = [];
+    if (type !== undefined) {
+        queryParam.push({ Type: type.toLowerCase() });
+    }
+    if (title !== undefined) {
+        queryParam.push({ Title: title.toLowerCase() });
+    }
+    if (year !== undefined) {
+        queryParam.push({ Year: year.toLowerCase() });
+    }
+
+    await movie
+        .getMovies()
+        .then(movie => {
+            result = searchMovie(queryParam, movie);
+            res.json({ data: result });
+        })
+        .catch(err => {
+            res.json({
+                error: err
+            });
+        });
+});
 
 // POST email send
 router.post("/email/:receiver", async (req, res) => {
