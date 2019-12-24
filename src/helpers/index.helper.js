@@ -1,6 +1,6 @@
 const { inArray } = require("./inArray");
 const { newDate } = require("./dateTime");
-const { writeToJSON, readFromJSON } = require("./fs.helper");
+const { writeToJSON, readFromJSON, writeStream } = require("./fs.helper");
 const { getNewId } = require("./uuid");
 
 module.exports = {
@@ -8,5 +8,6 @@ module.exports = {
     dateTime: newDate,
     writeJson: writeToJSON,
     readJson: readFromJSON,
+    writeStream,
     id: getNewId
 };

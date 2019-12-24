@@ -15,7 +15,15 @@ const readFromJSON = filename => {
     });
 };
 
+// Helper to write stream
+const writeStream = filename => {
+    fs.createWriteStream(filename, err => {
+        if (err) console.log("Write stream error => ", err);
+    });
+};
+
 module.exports = {
     writeToJSON,
-    readFromJSON
+    readFromJSON,
+    writeStream
 };

@@ -5,9 +5,30 @@ const router = express.Router();
 //  Email sender
 const { sendEmail } = require("../utilities/sg_email");
 // Model
-const { catalogue } = require("../models/index.models");
+const { catalogue, movie } = require("../models/index.models");
 // Validation
 const { isValidEmail } = require("../middleware/index.middleware");
+// PDF Generator
+const generatePdf = require("../utilities/pdfMake");
+
+router.get("/pdf/all", async (req, res) => {
+    const movies = await movie.getMovies();
+    try {
+        const pdf = await generatePdf(movies, "all");
+        if(pdf) {
+            res.send({
+                message: "PDF created",
+                status: 200
+            });
+            console.log("PDF generated");
+        }
+
+    } catch (err) {
+        // Errors
+        res.status(err.status).json({ message: err.message });
+        throw new Error(error.message);
+    }
+});
 
 // GET Search catalogue of movies
 // router.post("/search", async (req, res) => {
