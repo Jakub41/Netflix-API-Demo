@@ -4,7 +4,7 @@ const { check, sanitizeBody } = require("express-validator");
 // Create new review validation
 const createReviewValidation = () => {
     return [
-        check("rate")
+        check("Rate")
             .exists()
             .withMessage("rate is required")
             .isNumeric()
@@ -19,7 +19,7 @@ const createReviewValidation = () => {
 // Update review validation
 const updateReviewValidation = () => {
     return [
-        check("rate")
+        check("Rate")
             .exists()
             .withMessage("rate is required")
             .isNumeric()

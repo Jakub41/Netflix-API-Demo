@@ -45,7 +45,7 @@ router.post("/", check.createReview(), check.rules, async (req, res) => {
         return;
     }
     review
-        .createReview(req.body)
+        .createReview(req.matchedData)
         .then(data =>
             // OK Review is created
             res.status(201).json({
@@ -72,7 +72,7 @@ router.put("/:id", check.updateReview(), check.rules, async (req, res) => {
     // Await the Review
     await review
         // Call model to update the product
-        .updateReview(id, req.body)
+        .updateReview(id, req.matchedData)
         // Response a message
         .then(review =>
             res.json({

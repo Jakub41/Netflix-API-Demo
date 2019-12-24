@@ -8,19 +8,19 @@ const createMovieValidation = () => {
             .notEmpty()
             .exists()
             .withMessage("You should specify the imdbID"),
-        check("title")
+        check("Title")
             .notEmpty()
             .exists()
             .withMessage("The Title is required"),
-        check("year")
+        check("Year")
             .notEmpty()
             .exists()
             .withMessage("Year is required"),
-        check("type")
+        check("Type")
             .notEmpty()
             .exists()
             .withMessage("Type is required"),
-        check("poster")
+        check("Poster")
             .notEmpty()
             .exists()
             .withMessage("Poster is required"),
@@ -30,19 +30,19 @@ const createMovieValidation = () => {
 // Update movie validation
 const updateMovieValidation = () => {
     return [
-        check("title")
+        check("Title")
             .notEmpty()
             .optional()
             .withMessage("The Title is required"),
-        check("year")
+        check("Year")
             .notEmpty()
             .optional()
             .withMessage("Year is required"),
-        check("type")
+        check("Type")
             .notEmpty()
             .optional()
             .withMessage("Type is required"),
-        check("poster")
+        check("Poster")
             .notEmpty()
             .optional()
             .withMessage("Poster is required"),

@@ -52,11 +52,11 @@ router.post("/", check.createMovie(), check.rules, async (req, res) => {
     // We create a new date time with helper
     movie
         // Using the model to create a movie
-        .createMovie(req.body)
+        .createMovie(req.matchedData)
         .then(data =>
             // OK Movie is created
             res.status(201).json({
-                message: `The Movie #${data.title} has been created`,
+                message: `The Movie #${data.Title} has been created`,
                 content: data
             })
         )
@@ -71,7 +71,7 @@ router.put("/:imdbid", check.updateMovie(), check.rules, async (req, res) => {
     // Await the movie
     await movie
         // Call model to update the product
-        .updateMovie(imdbid, req.body)
+        .updateMovie(imdbid, req.matchedData)
         // Response a message
         .then(movie =>
             res.json({
