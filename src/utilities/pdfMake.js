@@ -5,7 +5,7 @@ const { writeStream } = require("../helpers/fs.helper");
 const path = require("path");
 
 const generatePdf = (movies, name) => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
             let fonts = {
                 Roboto: {
@@ -25,7 +25,7 @@ const generatePdf = (movies, name) => {
             console.log(filePath);
             pdfStream.pipe(writeStream(filePath));
             pdfStream.end();
-            resolve();
+            resolve(filePath);
         } catch (err) {
             console.log(err);
             reject(err);

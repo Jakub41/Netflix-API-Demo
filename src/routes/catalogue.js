@@ -15,14 +15,10 @@ router.get("/pdf/all", async (req, res) => {
     const movies = await movie.getMovies();
     try {
         const pdf = await generatePdf(movies, "all");
-        if(pdf) {
-            res.send({
-                message: "PDF created",
-                status: 200
-            });
-            console.log("PDF generated");
-        }
-
+        pdf.on("finish", async () => {
+            res.download(pdf);
+            res.send("PDF generated");
+        });
     } catch (err) {
         // Errors
         res.status(err.status).json({ message: err.message });
