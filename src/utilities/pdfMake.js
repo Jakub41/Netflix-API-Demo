@@ -29,6 +29,7 @@ const generatePdf = (movies, name) => {
             const stream = writeStream(filePath);
             pdfStream.pipe(stream);
             pdfStream.end();
+
             stream.on("finish", () => resolve(filePath));
         } catch (err) {
             console.log(err);

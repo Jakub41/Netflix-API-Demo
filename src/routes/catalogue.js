@@ -16,7 +16,6 @@ router.get("/pdf/all", async (req, res) => {
     try {
         const pdf = await generatePdf(movies, "movies_catalogue");
         res.download(pdf);
-        res.send("PDF generated");
     } catch (err) {
         // Errors
         res.status(err.status).json({ message: err.message });
