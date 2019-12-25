@@ -5,7 +5,7 @@ const router = express.Router();
 //  Email sender
 const { sendEmail } = require("../utilities/sg_email");
 // Model
-const { catalogue, movie } = require("../models/index.models");
+const { movie } = require("../models/index.models");
 // Validation
 const { isValidEmail } = require("../middleware/index.middleware");
 // PDF Generator

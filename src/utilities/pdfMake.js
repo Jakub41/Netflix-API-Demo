@@ -1,7 +1,7 @@
-const { uploads, pdfDir, moviesDB } = require("../config/config");
+const { uploads, pdfDir } = require("../config/config");
 const pdfMaker = require("pdfmake");
 const template = require("./pdfTemplate");
-const { writeStream } = require("../helpers/fs.helper");
+const { writeStream, dateTime } = require("../helpers/index.helper");
 const path = require("path");
 
 const generatePdf = (movies, name) => {
@@ -23,13 +23,13 @@ const generatePdf = (movies, name) => {
                 uploads +
                     "/" +
                     pdfDir +
-                    `${name}-${new Date().toTimeString()}.pdf`
+                    `${name}-${dateTime()}.pdf`
             );
             console.log(filePath);
             const stream = writeStream(filePath);
             pdfStream.pipe(stream);
             pdfStream.end();
-
+            // Before download need to wait the file writing
             stream.on("finish", () => resolve(filePath));
         } catch (err) {
             console.log(err);
