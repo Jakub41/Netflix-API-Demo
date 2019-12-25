@@ -14,11 +14,9 @@ const generatePdf = require("../utilities/pdfMake");
 router.get("/pdf/all", async (req, res) => {
     const movies = await movie.getMovies();
     try {
-        const pdf = await generatePdf(movies, "all");
-        pdf.on("finish", async () => {
-            res.download(pdf);
-            res.send("PDF generated");
-        });
+        const pdf = await generatePdf(movies, "movies_catalogue");
+        res.download(pdf);
+        res.send("PDF generated");
     } catch (err) {
         // Errors
         res.status(err.status).json({ message: err.message });

@@ -20,12 +20,16 @@ const generatePdf = (movies, name) => {
             const pdfStream = printer.createPdfKitDocument(pdfTemplate, {});
             const filePath = path.join(
                 __dirname,
-                uploads + "/" + pdfDir + `${name}.pdf`
+                uploads +
+                    "/" +
+                    pdfDir +
+                    `${name}-${new Date().toTimeString()}.pdf`
             );
             console.log(filePath);
-            pdfStream.pipe(writeStream(filePath));
+            const stream = writeStream(filePath);
+            pdfStream.pipe(stream);
             pdfStream.end();
-            resolve(filePath);
+            stream.on("finish", () => resolve(filePath));
         } catch (err) {
             console.log(err);
             reject(err);
