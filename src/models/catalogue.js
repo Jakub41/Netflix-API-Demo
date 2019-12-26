@@ -1,1 +1,1 @@
-// Possible catalogue model here
+// GET one movie in the catalogue

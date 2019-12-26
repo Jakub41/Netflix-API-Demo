@@ -11,6 +11,7 @@ const { isValidEmail } = require("../middleware/index.middleware");
 // PDF Generator
 const generatePdf = require("../utilities/pdfMake");
 
+// GET the entire movies catalogue to PDF
 router.get("/pdf/all", async (req, res) => {
     const movies = await movie.getMovies();
     try {
@@ -22,6 +23,9 @@ router.get("/pdf/all", async (req, res) => {
         throw new Error(error.message);
     }
 });
+
+// GET one movie list to PDF
+router.get("/pdf", async (req, res) => {});
 
 // GET Search catalogue of movies
 // router.post("/search", async (req, res) => {
