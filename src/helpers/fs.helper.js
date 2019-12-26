@@ -22,8 +22,16 @@ const writeStream = filename => {
     });
 };
 
+// Helper to read stream
+const readFile = (filename, binary) => {
+    return fs.readFileSync(filename, binary, err => {
+        if (err) console.log("Read file error => ", err);
+    });
+};
+
 module.exports = {
     writeToJSON,
     readFromJSON,
-    writeStream
+    writeStream,
+    readFile
 };

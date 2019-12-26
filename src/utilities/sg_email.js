@@ -1,6 +1,7 @@
 const { sg_token } = require("../config/config");
 const MailGen = require("mailgen");
 const sgMail = require("@sendgrid/mail");
+const { readFile, date } = require("../helpers/index.helper");
 
 const mailGenerator = new MailGen({
     theme: "salted",
@@ -10,13 +11,14 @@ const mailGenerator = new MailGen({
     }
 });
 
-const sendEmail = async receiver => {
+const sendEmail = async (receiver, pdf) => {
     const email = {
         body: {
             name: receiver.split("@")[0], // will take the part before the @ symbol
             intro: [
                 "Welcome to the movie platform",
-                "Discover today the best movies you can watch"
+                "Discover today the best movies you can watch",
+                "Attached to this mail the full list of movies we have in the catalogue"
             ],
             action: {
                 instructions:
@@ -31,12 +33,22 @@ const sendEmail = async receiver => {
     };
 
     const emailTemplate = mailGenerator.generate(email);
-    require("fs").writeFileSync("preview.html", emailTemplate, "utf8");
+    // A test of the email preview in HTML
+    //require("fs").writeFileSync("preview.html", emailTemplate, "utf8");
 
+    const pdfAttachment = readFile(pdf, 'base64');
     const msg = {
         from: "jake@email.io",
-        subject: "Testing email from NodeJS",
-        html: emailTemplate
+        subject: "Awesome movies catalogue",
+        html: emailTemplate,
+        attachments: [
+            {
+                content: pdfAttachment,
+                filename: `movie_catalogue_${date()}.pdf`,
+                type: "application/pdf",
+                disposition: "attachment"
+            }
+        ]
     };
 
     try {

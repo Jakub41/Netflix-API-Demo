@@ -36,15 +36,17 @@ router.get("/pdf", async (req, res) => {});
 // });
 
 // POST email send
-router.post("/email/:receiver", async (req, res) => {
-    const receiver = req.params.receiver.toLowerCase();
+router.post("/email", async (req, res) => {
+    const receiver = req.query.receiver.toLowerCase();
+    const movies = await movie.getMovies();
     // Email Validation
     const valid = isValidEmail(receiver);
     // Valid try to send
     if (valid) {
         try {
+            const pdf = await generatePdf(movies, "movies_catalogue");
             // Waiting the email is sent
-            const sent = await sendEmail(receiver);
+            const sent = await sendEmail(receiver, pdf);
             // No errors
             if (sent) {
                 res.send({
