@@ -31,11 +31,13 @@ router.get("/pdf/all", async (req, res) => {
     }
 });
 
+// Search query
 router.get("/search", async (req, res) => {
+    // 3 query params
     let title = req.query.title;
     let year = req.query.year;
     let type = req.query.type;
-
+    // Checking query params and push
     const queryParam = [];
     if (type !== undefined) {
         queryParam.push({ Type: type });
@@ -46,10 +48,11 @@ router.get("/search", async (req, res) => {
     if (year !== undefined) {
         queryParam.push({ Year: year });
     }
-
+    // Getting movies array
     await movie
         .getMovies()
         .then(movie => {
+            // Results of the query
             result = searchMovie(queryParam, movie);
             res.json({ data: result });
         })
