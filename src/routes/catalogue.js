@@ -5,7 +5,7 @@ const router = express.Router();
 //  Email sender
 const { sendEmail } = require("../utilities/sg_email");
 // Model
-const { catalogue, movie } = require("../models/index.models");
+const { movie } = require("../models/index.models");
 // Validation
 const { isValidEmail } = require("../middleware/index.middleware");
 // PDF Generator
@@ -13,17 +13,12 @@ const generatePdf = require("../utilities/pdfMake");
 // Search movie
 const searchMovie = require("../utilities/searchMovie");
 
+// GET the entire movies catalogue to PDF
 router.get("/pdf/all", async (req, res) => {
     const movies = await movie.getMovies();
     try {
-        const pdf = await generatePdf(movies, "all");
-        if (pdf) {
-            res.send({
-                message: "PDF created",
-                status: 200
-            });
-            console.log("PDF generated");
-        }
+        const pdf = await generatePdf(movies, "movies_catalogue");
+        res.download(pdf);
     } catch (err) {
         // Errors
         res.status(err.status).json({ message: err.message });
@@ -64,15 +59,17 @@ router.get("/search", async (req, res) => {
 });
 
 // POST email send
-router.post("/email/:receiver", async (req, res) => {
-    const receiver = req.params.receiver.toLowerCase();
+router.post("/email", async (req, res) => {
+    const receiver = req.query.receiver.toLowerCase();
+    const movies = await movie.getMovies();
     // Email Validation
     const valid = isValidEmail(receiver);
     // Valid try to send
     if (valid) {
         try {
+            const pdf = await generatePdf(movies, "movies_catalogue");
             // Waiting the email is sent
-            const sent = await sendEmail(receiver);
+            const sent = await sendEmail(receiver, pdf);
             // No errors
             if (sent) {
                 res.send({

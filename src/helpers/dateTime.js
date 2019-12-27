@@ -1,6 +1,10 @@
-const newDate = () => {
+const newDateTime = () => {
     // converting Date to be a string
     return new Date().toString();
 };
 
-module.exports = { newDate };
+const newDate = () => {
+    return new Date().toDateString();
+}
+
+module.exports = { newDateTime, newDate };

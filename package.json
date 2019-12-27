@@ -26,6 +26,7 @@
     "express-validation": "^1.0.3",
     "express-validator": "^6.3.0",
     "fs-extra": "^8.1.0",
+    "html-to-pdfmake": "^1.2.0",
     "json2csv": "^4.5.4",
     "lodash": "^4.17.15",
     "mailgen": "^2.0.10",
