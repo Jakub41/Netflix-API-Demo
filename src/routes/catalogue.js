@@ -80,6 +80,7 @@ router.post("/email", async (req, res) => {
             }
         } catch (error) {
             // Errors
+            res.status(500).json({ message: err.message });
             throw new Error(error.message);
         }
     } else {
