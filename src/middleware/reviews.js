@@ -4,11 +4,11 @@ const { check, sanitizeBody } = require("express-validator");
 // Create new review validation
 const createReviewValidation = () => {
     return [
-        check("Rate")
+        check("rate")
             .exists()
             .withMessage("rate is required")
             .isNumeric()
-            .withMessage("The rate should be between 0 and 5"),
+            .withMessage("The rate should be between 1 and 5"),
         check("imdbID")
             .notEmpty()
             .exists()
@@ -19,11 +19,11 @@ const createReviewValidation = () => {
 // Update review validation
 const updateReviewValidation = () => {
     return [
-        check("Rate")
+        check("rate")
             .exists()
             .withMessage("rate is required")
             .isNumeric()
-            .withMessage("The rate should be between 0 and 5"),
+            .withMessage("The rate should be between 1 and 5"),
         check("imdbID")
             .notEmpty()
             .exists()
