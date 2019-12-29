@@ -2,7 +2,6 @@ const path = require("path");
 const multer = require("multer");
 const mime = require("mime-types");
 const { date } = require("../helpers/index.helper");
-const { POSTERS } = require("../config/config");
 const { uploadsDir } = require("../utilities/paths");
 
 // setting up storage engine for file upload

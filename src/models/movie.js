@@ -58,9 +58,9 @@ const updateMovie = (imdbid, newMovie) => {
         h.inArray(movies, imdbid)
             .then(movie => {
                 const index = movies.findIndex(b => b.imdbID === imdbid);
-                console.log("INDEX ", index)
-                let updateId = { imdbid: movie.imdbID };
-                console.log("updateID ", updateId)
+                console.log("INDEX ", index);
+                let updateId = { imdbID: movie.imdbID };
+                console.log("updateID ", updateId);
                 const date = {
                     created_at: movie.created_at,
                     // Update only the updated at date time
