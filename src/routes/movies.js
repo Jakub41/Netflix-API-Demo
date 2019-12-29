@@ -6,6 +6,10 @@ const router = express.Router();
 const { movie, review } = require("../models/index.models");
 // Validations middleware
 const check = require("../middleware/index.middleware");
+// Path
+const path = require("path");
+// Directory uploads/posters
+const { uploads, POSTERS } = require("../config/config");
 
 // GET all movies
 router.get("/", check.rules, async (req, res) => {
@@ -88,7 +92,7 @@ router.put("/:imdbid", check.updateMovie(), check.rules, async (req, res) => {
         });
 });
 
-// DELeTE a movie
+// DELETE a movie
 router.delete("/:imdbid", check.rules, async (req, res) => {
     const imdbid = req.params.imdbid;
     // Await server
@@ -110,6 +114,7 @@ router.delete("/:imdbid", check.rules, async (req, res) => {
         });
 });
 
+// GET reviews of a movie
 router.get("/:imdbid/reviews", check.rules, async (req, res) => {
     const imdbid = req.params.imdbid;
     // Await server
@@ -125,16 +130,20 @@ router.get("/:imdbid/reviews", check.rules, async (req, res) => {
         });
 });
 
+// POST Upload a poster of a movie
 router.post("/:imdbid/upload", (req, res) => {
+    // Check the upload
     check.upload.single("poster")(req, res, async function(err) {
+        // Errors
         if (err) {
             res.status(err.status || 500).json({ message: err });
             return;
         }
-
+        // Taking the params
         const imdbid = req.params.imdbid;
         const file = req.file;
-        const url = `/poster/${file.filename}`;
+        const url = path.join(__dirname, `${uploads}${POSTERS}${file.filename}`);
+        console.log(url);
 
         // Await the movie
         await movie

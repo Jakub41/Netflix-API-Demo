@@ -1,6 +1,7 @@
 const path = require("path");
 const multer = require("multer");
 const mime = require("mime-types");
+const { date } = require("../helpers/index.helper")
 
 const { uploads, POSTERS } = require("../config/config");
 
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
             null,
             file.fieldname +
                 "-" +
-                Date.now() +
+                date() +
                 "." +
                 mime.extension(file.mimetype)
         );
