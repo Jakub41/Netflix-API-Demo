@@ -6,10 +6,9 @@ const router = express.Router();
 const { movie, review } = require("../models/index.models");
 // Validations middleware
 const check = require("../middleware/index.middleware");
-// Path
-const path = require("path");
 // Directory uploads/posters
-const { uploads, POSTERS } = require("../config/config");
+const { POSTERS } = require("../config/config");
+const { uploadsDir } = require("../utilities/paths")
 
 // GET all movies
 router.get("/", check.rules, async (req, res) => {
@@ -142,8 +141,7 @@ router.post("/:imdbid/upload", (req, res) => {
         // Taking the params
         const imdbid = req.params.imdbid;
         const file = req.file;
-        const url = path.join(__dirname, `${uploads}${POSTERS}${file.filename}`);
-        console.log(url);
+        const url = `${uploadsDir}${POSTERS}${file.filename}`;
 
         // Await the movie
         await movie
