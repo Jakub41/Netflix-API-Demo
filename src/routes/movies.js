@@ -8,7 +8,10 @@ const { movie, review } = require("../models/index.models");
 const check = require("../middleware/index.middleware");
 // Directory uploads/posters
 const { POSTERS } = require("../config/config");
-const { uploadsDir } = require("../utilities/paths")
+const { uploadsDir } = require("../utilities/paths");
+// Sort
+const _ = require('lodash');
+const { sortMovie } = require('../utilities/sortMovie');
 
 // GET all movies
 router.get("/", check.rules, async (req, res) => {
@@ -17,6 +20,64 @@ router.get("/", check.rules, async (req, res) => {
         .getMovies()
         // Result the all Movies
         .then(movies => res.json(movies))
+        // If any errors
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            } else {
+                res.status(500).json({ message: err.message });
+            }
+        });
+});
+
+// GET only movies with reviews sorted by rating in descending order
+router.get("/reviewed", check.rules, async (req, res) => {
+    // pass a request param as ?ASC=true to make list ascending sort by rating
+    const SORT_ASCENDING = req.query.asc == "true";
+    console.log("SORT_ASCENDING =>", SORT_ASCENDING);
+    // Await response server
+    await movie
+        .getMovies()
+        // Result the all Movies
+        .then(async movies => {
+            // get all reviews
+            let reviews = await review.getReviews();
+
+            // filter movies with atleast one review
+            movies = movies
+                .map(i => {
+                    // get reviews of current movie
+                    let movieReviews = reviews.filter(
+                        f => f.imdbID == i.imdbID
+                    );
+
+                    // calculate the average rating (sum_of_total_ratings / no_of_total_reviews)
+                    let avgRate = 0;
+                    if (movieReviews.length)
+                        avgRate = Math.round(
+                            _.sumBy(movieReviews, r => parseInt(r.rate)) /
+                                movieReviews.length
+                        );
+
+                    // extends returned movie object with reviews & rate
+                    let m = Object.assign(
+                        { reviews: movieReviews, rate: avgRate },
+                        i
+                    );
+
+                    return m;
+                })
+                .filter(m => m.reviews.length > 0);
+
+            // sort by rating - descending
+            let criteria =
+                SORT_ASCENDING == true
+                    ? { asc: u => u.rate }
+                    : { desc: u => u.rate };
+            movies = sortMovie(movies, [criteria]);
+
+            return res.json(movies);
+        })
         // If any errors
         .catch(err => {
             if (err.status) {
