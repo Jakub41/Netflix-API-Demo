@@ -10,8 +10,8 @@ const check = require("../middleware/index.middleware");
 const { POSTERS } = require("../config/config");
 const { uploadsDir } = require("../utilities/paths");
 // Sort
-const _ = require('lodash');
-const { sortMovie } = require('../utilities/sortMovie');
+const _ = require("lodash");
+const { sortMovie } = require("../utilities/sortMovie");
 
 // GET all movies
 router.get("/", check.rules, async (req, res) => {
@@ -31,7 +31,7 @@ router.get("/", check.rules, async (req, res) => {
 });
 
 // GET only movies with reviews sorted by rating in descending order
-router.get("/sort", check.rules, async (req, res) => {
+router.get("/sort/by-rate", check.rules, async (req, res) => {
     // pass a request param as ?ASC=true to make list ascending sort by rating
     const SORT_ASCENDING = req.query.asc === "true";
     console.log("SORT_ASCENDING =>", SORT_ASCENDING);
@@ -74,6 +74,41 @@ router.get("/sort", check.rules, async (req, res) => {
                 SORT_ASCENDING === true
                     ? { asc: u => u.rate }
                     : { desc: u => u.rate };
+            movies = sortMovie(movies, [criteria]);
+
+            return res.json(movies);
+        })
+        // If any errors
+        .catch(err => {
+            if (err.status) {
+                res.status(err.status).json({ message: err.message });
+            } else {
+                res.status(500).json({ message: err.message });
+            }
+        });
+});
+
+// GET Movies sorted by title/year
+router.get("/sort", check.rules, async (req, res) => {
+    const SORT_ASCENDING = req.query.asc === "true";
+    const SORT_DESCENDING = req.query.desc === "true";
+    const YEAR = req.query.year === "true";
+    console.log("SORT_DESCENDING =>", SORT_DESCENDING);
+    console.log("SORT_ASCENDING =>", SORT_ASCENDING);
+    console.log("YEAR =>", YEAR);
+    // Await response server
+    await movie
+        .getMovies()
+        // Result the all Movies sorted
+        .then(async movies => {
+            let criteria = !YEAR
+                ? SORT_DESCENDING === true
+                    ? { desc: u => u.Title }
+                    : { asc: u => u.Title }
+                : SORT_ASCENDING === true
+                ? { asc: u => u.Year }
+                : { desc: u => u.Year };
+
             movies = sortMovie(movies, [criteria]);
 
             return res.json(movies);
