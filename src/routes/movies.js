@@ -31,9 +31,9 @@ router.get("/", check.rules, async (req, res) => {
 });
 
 // GET only movies with reviews sorted by rating in descending order
-router.get("/reviewed", check.rules, async (req, res) => {
+router.get("/sort", check.rules, async (req, res) => {
     // pass a request param as ?ASC=true to make list ascending sort by rating
-    const SORT_ASCENDING = req.query.asc == "true";
+    const SORT_ASCENDING = req.query.asc === "true";
     console.log("SORT_ASCENDING =>", SORT_ASCENDING);
     // Await response server
     await movie
@@ -43,12 +43,12 @@ router.get("/reviewed", check.rules, async (req, res) => {
             // get all reviews
             let reviews = await review.getReviews();
 
-            // filter movies with atleast one review
+            // filter movies with at least one review
             movies = movies
                 .map(i => {
                     // get reviews of current movie
                     let movieReviews = reviews.filter(
-                        f => f.imdbID == i.imdbID
+                        f => f.imdbID === i.imdbID
                     );
 
                     // calculate the average rating (sum_of_total_ratings / no_of_total_reviews)
@@ -71,7 +71,7 @@ router.get("/reviewed", check.rules, async (req, res) => {
 
             // sort by rating - descending
             let criteria =
-                SORT_ASCENDING == true
+                SORT_ASCENDING === true
                     ? { asc: u => u.rate }
                     : { desc: u => u.rate };
             movies = sortMovie(movies, [criteria]);
