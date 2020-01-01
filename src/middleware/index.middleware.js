@@ -3,6 +3,7 @@ const { createMovieValidation, updateMovieValidation } = require("./movie");
 const { createReviewValidation, updateReviewValidation } = require("./reviews");
 const { upload } = require("./fileupload");
 const { isValidEmail } = require("../middleware/emailValidator");
+const { isBoolSort } = require("./sortCheckBool");
 
 module.exports = {
     rules: validateRules,
@@ -11,5 +12,6 @@ module.exports = {
     createReview: createReviewValidation,
     updateReview: updateReviewValidation,
     upload,
-    isValidEmail
+    isValidEmail,
+    isBoolSort
 };

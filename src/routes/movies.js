@@ -90,6 +90,7 @@ router.get("/sort/by-rate", check.rules, async (req, res) => {
 
 // GET Movies sorted by title/year
 router.get("/sort", check.rules, async (req, res) => {
+    // BOOLEAN Const => need a better way to define those
     const SORT_ASCENDING = req.query.asc === "true";
     const SORT_DESCENDING = req.query.desc === "true";
     const YEAR = req.query.year === "true";
@@ -101,16 +102,19 @@ router.get("/sort", check.rules, async (req, res) => {
         .getMovies()
         // Result the all Movies sorted
         .then(async movies => {
+            // Criteria YEAR === false => by default is by title
             let criteria = !YEAR
+                // Sorting ASC by default A to Z
                 ? SORT_DESCENDING === true
                     ? { desc: u => u.Title }
                     : { asc: u => u.Title }
+                // Sorting by year most recent by default
                 : SORT_ASCENDING === true
                 ? { asc: u => u.Year }
                 : { desc: u => u.Year };
-
+            // Call the sort utility
             movies = sortMovie(movies, [criteria]);
-
+            // response
             return res.json(movies);
         })
         // If any errors
