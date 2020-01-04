@@ -149,11 +149,40 @@ const getSortedMoviesByRate = sort_ascending => {
     });
 };
 
+// Movie sort - title/year
+const getSortedMovies = (sort_asc, sort_desc, sort_year) => {
+    return new Promise(async (resolve, reject) => {
+        // Check if w have any movie data
+        if (movies.length === 0) {
+            reject({
+                message: "No movies at this time",
+                status: 202
+            });
+        }
+
+        // Criteria YEAR === false => by default is by title
+        let criteria = !sort_year
+            ? // Sorting ASC by default A to Z
+              sort_desc === true
+                ? { desc: m => m.Title }
+                : { asc: m => m.Title }
+            : // Sorting by year most recent by default
+            sort_asc === true
+            ? { asc: m => m.Year }
+            : { desc: m => m.Year };
+        // Call the sort utility
+        movies = sortMovie(movies, [criteria]);
+
+        resolve(movies).catch(err => reject(err));
+    });
+};
+
 module.exports = {
     getMovies,
     getMovie,
     createMovie,
     updateMovie,
     deleteMovie,
-    getSortedMoviesByRate
+    getSortedMoviesByRate,
+    getSortedMovies
 };

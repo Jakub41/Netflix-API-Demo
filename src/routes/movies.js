@@ -9,9 +9,6 @@ const check = require("../middleware/index.middleware");
 // Directory uploads/posters
 const { POSTERS } = require("../config/config");
 const { uploadsDir } = require("../utilities/paths");
-// Sort
-const _ = require("lodash");
-const { sortMovie } = require("../utilities/sortMovie");
 
 // GET all movies
 router.get("/", check.rules, async (req, res) => {
@@ -31,52 +28,40 @@ router.get("/", check.rules, async (req, res) => {
 });
 
 // GET only movies with reviews sorted by rating in descending order
-router.get("/sort/by-rate", check.isBoolSort(), check.rules, async (req, res) => {
-    // Await response server
-    await movie
-        // Calling from the model the sort by rate default DESC
-        .getSortedMoviesByRate(req.query.asc === "true")
-        // Result the all Movies sorted
-        .then(movies => res.json(movies))
-        // If any errors
-        .catch(err => {
-            if (err.status) {
-                res.status(err.status).json({ message: err.message });
-            } else {
-                res.status(500).json({ message: err.message });
-            }
-        });
-});
+router.get(
+    "/sort/by-rate",
+    check.isBoolSort(),
+    check.rules,
+    async (req, res) => {
+        // Await response server
+        await movie
+            // Calling from the model the sort by rate default DESC
+            .getSortedMoviesByRate(req.query.asc === "true")
+            // Result the all Movies sorted
+            .then(movies => res.json(movies))
+            // If any errors
+            .catch(err => {
+                if (err.status) {
+                    res.status(err.status).json({ message: err.message });
+                } else {
+                    res.status(500).json({ message: err.message });
+                }
+            });
+    }
+);
 
 // GET Movies sorted by title/year
-router.get("/sort", check.rules, async (req, res) => {
-    // BOOLEAN Const => need a better way to define those
-    const SORT_ASCENDING = req.query.asc === "true";
-    const SORT_DESCENDING = req.query.desc === "true";
-    const YEAR = req.query.year === "true";
-    console.log("SORT_DESCENDING =>", SORT_DESCENDING);
-    console.log("SORT_ASCENDING =>", SORT_ASCENDING);
-    console.log("YEAR =>", YEAR);
+router.get("/sort", check.isBoolSort(), check.rules, async (req, res) => {
     // Await response server
     await movie
-        .getMovies()
+        // Model call sorted movies by title/year
+        .getSortedMovies(
+            req.query.asc === "true",
+            req.query.desc === "true",
+            req.query.year === "true"
+        )
         // Result the all Movies sorted
-        .then(async movies => {
-            // Criteria YEAR === false => by default is by title
-            let criteria = !YEAR
-                ? // Sorting ASC by default A to Z
-                  SORT_DESCENDING === true
-                    ? { desc: u => u.Title }
-                    : { asc: u => u.Title }
-                : // Sorting by year most recent by default
-                SORT_ASCENDING === true
-                ? { asc: u => u.Year }
-                : { desc: u => u.Year };
-            // Call the sort utility
-            movies = sortMovie(movies, [criteria]);
-            // response
-            return res.json(movies);
-        })
+        .then(movies => res.json(movies))
         // If any errors
         .catch(err => {
             if (err.status) {
