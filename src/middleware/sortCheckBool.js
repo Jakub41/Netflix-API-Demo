@@ -1,12 +1,21 @@
-// Sort check
-const { check } = require("express-validator");
+// Sort check by query
+const { query } = require("express-validator");
 
 const isBoolSort = () => {
     return [
-        check("asc").isBoolean().withMessage("ASC need to be a boolean"),
-        check("desc").isBoolean().withMessage("DESC need to be a boolean"),
-        check("year").isBoolean().withMessage("YEAR need to be a boolean")
+        query("asc")
+            .optional()
+            .isBoolean()
+            .withMessage("ASC need to be a boolean"),
+        query("desc")
+            .optional()
+            .isBoolean()
+            .withMessage("DESC need to be a boolean"),
+        query("year")
+            .optional()
+            .isBoolean()
+            .withMessage("YEAR need to be a boolean")
     ];
 };
 
-exports.module = { isBoolSort };
+module.exports = { isBoolSort };

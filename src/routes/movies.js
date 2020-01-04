@@ -31,7 +31,7 @@ router.get("/", check.rules, async (req, res) => {
 });
 
 // GET only movies with reviews sorted by rating in descending order
-router.get("/sort/by-rate", check.rules, async (req, res) => {
+router.get("/sort/by-rate", check.isBoolSort(), check.rules, async (req, res) => {
     // Await response server
     await movie
         // Calling from the model the sort by rate default DESC

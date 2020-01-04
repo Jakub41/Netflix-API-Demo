@@ -1,5 +1,5 @@
 // Adding body module of express validator
-const { check, sanitizeBody } = require("express-validator");
+const { check } = require("express-validator");
 
 // Create new movie validation
 const createMovieValidation = () => {
