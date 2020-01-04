@@ -98,7 +98,7 @@ const deleteMovie = imdbid => {
 
 // Get movies list sorted by review rate
 const getSortedMoviesByRate = sort_ascending => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // Check if w have any movie data
         if (movies.length === 0) {
             reject({
@@ -145,13 +145,13 @@ const getSortedMoviesByRate = sort_ascending => {
                 : { desc: m => m.rate }
         ]);
 
-        resolve(movies);
+        resolve(movies).catch(err => reject(err));;
     });
 };
 
 // Movie sort - title/year
 const getSortedMovies = (sort_asc, sort_desc, sort_year) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // Check if w have any movie data
         if (movies.length === 0) {
             reject({
@@ -174,7 +174,7 @@ const getSortedMovies = (sort_asc, sort_desc, sort_year) => {
         // Call the sort utility
         movies = sortMovie(movies, [criteria]);
 
-        resolve(movies);
+        resolve(movies).catch(err => reject(err));;
     });
 };
 
