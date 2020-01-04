@@ -140,7 +140,7 @@ const getSortedMoviesByRate = sort_ascending => {
         // Higher rate AVG first
         movies = sortMovie(movies, [
             // if ASC === tue reversed sort from lower rates AVG
-            sort_ascending === true
+            sort_ascending
                 ? { asc: m => m.rate }
                 : { desc: m => m.rate }
         ]);
