@@ -32,52 +32,12 @@ router.get("/", check.rules, async (req, res) => {
 
 // GET only movies with reviews sorted by rating in descending order
 router.get("/sort/by-rate", check.rules, async (req, res) => {
-    // pass a request param as ?ASC=true to make list ascending sort by rating
-    const SORT_ASCENDING = req.query.asc === "true";
-    console.log("SORT_ASCENDING =>", SORT_ASCENDING);
     // Await response server
     await movie
-        .getMovies()
-        // Result the all Movies
-        .then(async movies => {
-            // get all reviews
-            let reviews = await review.getReviews();
-
-            // filter movies with at least one review
-            movies = movies
-                .map(i => {
-                    // get reviews of current movie
-                    let movieReviews = reviews.filter(
-                        f => f.imdbID === i.imdbID
-                    );
-
-                    // calculate the average rating (sum_of_total_ratings / no_of_total_reviews)
-                    let avgRate = 0;
-                    if (movieReviews.length)
-                        avgRate = Math.round(
-                            _.sumBy(movieReviews, r => parseInt(r.rate)) /
-                                movieReviews.length
-                        );
-
-                    // extends returned movie object with reviews & rate
-                    let m = Object.assign(
-                        { reviews: movieReviews, rate: avgRate },
-                        i
-                    );
-
-                    return m;
-                })
-                .filter(m => m.reviews.length > 0);
-
-            // sort by rating - descending
-            let criteria =
-                SORT_ASCENDING === true
-                    ? { asc: u => u.rate }
-                    : { desc: u => u.rate };
-            movies = sortMovie(movies, [criteria]);
-
-            return res.json(movies);
-        })
+        // Calling from the model the sort by rate default DESC
+        .getSortedMoviesByRate(req.query.asc === "true")
+        // Result the all Movies sorted
+        .then(movies => res.json(movies))
         // If any errors
         .catch(err => {
             if (err.status) {
@@ -104,12 +64,12 @@ router.get("/sort", check.rules, async (req, res) => {
         .then(async movies => {
             // Criteria YEAR === false => by default is by title
             let criteria = !YEAR
-                // Sorting ASC by default A to Z
-                ? SORT_DESCENDING === true
+                ? // Sorting ASC by default A to Z
+                  SORT_DESCENDING === true
                     ? { desc: u => u.Title }
                     : { asc: u => u.Title }
-                // Sorting by year most recent by default
-                : SORT_ASCENDING === true
+                : // Sorting by year most recent by default
+                SORT_ASCENDING === true
                 ? { asc: u => u.Year }
                 : { desc: u => u.Year };
             // Call the sort utility

@@ -8,7 +8,12 @@ console.log(filePath);
 
 let movies = require(filePath);
 
+let reviews = require(path.join(__dirname, "../db", p.reviewJSON));
 const h = require("../helpers/index.helper");
+
+// Sort
+const _ = require("lodash");
+const { sortMovie } = require("../utilities/sortMovie");
 
 // GET movies
 const getMovies = () => {
@@ -91,10 +96,64 @@ const deleteMovie = imdbid => {
     });
 };
 
+// Get movies list sorted by review rate
+const getSortedMoviesByRate = sort_ascending => {
+    return new Promise(async (resolve, reject) => {
+        // Check if w have any movie data
+        if (movies.length === 0) {
+            reject({
+                message: "No movies at this time",
+                status: 202
+            });
+        }
+
+        movies = movies.map(function(m) {
+            // default values
+            let movieReviews = [],
+                avgRate = 0;
+
+            // check if movie has reviews
+            movieReviews = reviews.filter(r => r.imdbID === m.imdbID);
+
+            if (movieReviews.length > 0) {
+                avgRate = Math.round(
+                    _.sumBy(movieReviews, r => parseInt(r.rate)) /
+                        movieReviews.length
+                );
+            }
+
+            m = Object.assign(
+                {
+                    reviews: movieReviews,
+                    rate: avgRate
+                },
+                m
+            );
+
+            return m;
+        });
+
+        // filter movies with no review
+        movies = movies.filter(m => m.reviews.length > 0);
+
+        // sort by rating - descending by default
+        // Higher rate AVG first
+        movies = sortMovie(movies, [
+            // if ASC === tue reversed sort from lower rates AVG
+            sort_ascending === true
+                ? { asc: m => m.rate }
+                : { desc: m => m.rate }
+        ]);
+
+        resolve(movies).catch(err => reject(err));
+    });
+};
+
 module.exports = {
     getMovies,
     getMovie,
     createMovie,
     updateMovie,
-    deleteMovie
+    deleteMovie,
+    getSortedMoviesByRate
 };
