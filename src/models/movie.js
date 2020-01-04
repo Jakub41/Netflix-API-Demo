@@ -145,7 +145,7 @@ const getSortedMoviesByRate = sort_ascending => {
                 : { desc: m => m.rate }
         ]);
 
-        resolve(movies).catch(err => reject(err));
+        resolve(movies);
     });
 };
 
@@ -167,13 +167,14 @@ const getSortedMovies = (sort_asc, sort_desc, sort_year) => {
                 ? { desc: m => m.Title }
                 : { asc: m => m.Title }
             : // Sorting by year most recent by default
-                sort_asc === true
-                    ? { asc: m => m.Year }
-                    : { desc: m => m.Year };
+            sort_asc === true
+            ? { asc: m => m.Year }
+            : { desc: m => m.Year };
+        console.log("CRITERIA ==> ", criteria);
         // Call the sort utility
         movies = sortMovie(movies, [criteria]);
 
-        resolve(movies).catch(err => reject(err));
+        resolve(movies);
     });
 };
 
