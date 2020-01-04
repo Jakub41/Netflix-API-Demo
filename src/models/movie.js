@@ -163,11 +163,11 @@ const getSortedMovies = (sort_asc, sort_desc, sort_year) => {
         // Criteria YEAR === false => by default is by title
         let criteria = !sort_year
             ? // Sorting ASC by default A to Z
-              sort_desc === true
+              sort_desc
                 ? { desc: m => m.Title }
                 : { asc: m => m.Title }
             : // Sorting by year most recent by default
-            sort_asc === true
+            sort_asc
             ? { asc: m => m.Year }
             : { desc: m => m.Year };
         console.log("CRITERIA ==> ", criteria);
