@@ -26,6 +26,36 @@ router.get("/pdf/all", async (req, res) => {
     }
 });
 
+// GET search a movie by title to a PDF table
+router.get("/pdf", async (req, res) => {
+    let title = req.query.title;
+
+    console.log(title);
+
+    const queryParam = [];
+    if (title !== undefined) {
+        queryParam.push({ Title: title });
+        console.log(queryParam);
+    }
+
+    await movie
+        .getMovies()
+        .then(movie => {
+            // Results of the query
+            result = searchMovie(queryParam, movie);
+            console.log(result);
+            console.log(title);
+            const pdf = generatePdf(result, title);
+            res.download(pdf);
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Something went wrong!"
+            });
+            throw new Error(err.message);
+        });
+});
+
 // Search query
 router.get("/search", async (req, res) => {
     // 3 query params
