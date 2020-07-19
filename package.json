@@ -29,7 +29,7 @@
     "fs-extra": "^8.1.0",
     "html-to-pdfmake": "^1.2.0",
     "json2csv": "^4.5.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mailgen": "^2.0.10",
     "mime-types": "^2.1.25",
     "morgan": "^1.9.1",
